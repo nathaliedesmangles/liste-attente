@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Liste d'attente étudiants</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Liste d'attente</h1>
+    <p>Ajouter votre nom complet, puis « Servi » quand votre question a été répondue. Les données sont enregistrées dans Google Sheets.</p>
+  </header>
+
+  <section class="controls">
+    <div class="row">
+      <label>Sigle du cours</label>
+      <input id="course-code" type="text" placeholder="ex: 420-SN1-RE" />
+    </div>
+    <div class="row">
+      <label>Groupe</label>
+      <select id="group-number">
+        <select id="global-group"></select>
+<script>
+  const sel = document.getElementById("global-group");
+  for (let i = 1; i <= 16; i++) {
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = `Groupe ${i}`;
+    sel.appendChild(opt);
+  }
+</script>
+
+      </select>
+    </div>
+  </section>
+
+  <section class="add">
+    <div class="row">
+      <input id="student-name" type="text" placeholder="Nom de l'étudiant"/>
+      <button id="add-btn">Ajouter</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>File d’attente</h2>
+    <ul id="queue"></ul>
+    <div class="row actions">
+      <button id="refresh-btn" class="secondary">Rafraîchir</button>
+      <button id="clear-local-btn" class="secondary" title="Ne supprime rien côté Sheets, seulement le cache local">Vider cache local</button>
+    </div>
+  </section>
+
+  <section class="stats">
+    <h2>Statistiques</h2>
+    <div id="stats-box" class="stats-box"></div>
+
+    <div class="charts">
+      <div class="chart-wrap">
+        <h3>Demandes par date</h3>
+        <canvas id="chartByDate" height="140"></canvas>
+      </div>
+      <div class="chart-wrap">
+        <h3>Temps d’attente (moyenne par date)</h3>
+        <canvas id="chartAvgWaitByDate" height="140"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <small>© 2025 — Liste d’attente (Sheets + Netlify Functions)</small>
+  </footer>
+
+  <script src="app.js" type="module"></script>
+</body>
+</html>
