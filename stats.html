@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Statistiques - Accès enseignant</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      padding: 2rem;
+      text-align: center;
+    }
+    canvas {
+      max-width: 600px;
+      margin: 2rem auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Statistiques (réservé enseignant)</h1>
+  <div id="content" style="display:none;">
+    <h2>Par date</h2>
+    <canvas id="statsChart"></canvas>
+
+    <h2>Par groupe</h2>
+    <canvas id="groupStatsChart"></canvas>
+  </div>
+
+  <script>
+    // Mot de passe simple
+    const password = prompt("Mot de passe requis :");
+    if (password === "monMDPSecret") {
+      document.getElementById("content").style.display = "block";
+
+      // Charger les stats par date
+      async function loadStats() {
+        const res = await fetch("/.netlify/functions/getStats");
+        const stats = await res.json();
+        const labels = Object.keys(stats);
+        const data = Object.values(stats);
+
+        new Chart(document.getElementById("statsChart"), {
+          type: "bar",
+          data: {
+            labels: labels,
+            datasets: [{
+              label: "Étudiants inscrits",
+              data: data,
+              backgroundColor: "rgba(54, 162, 235, 0.6)",
+              borderColor: "rgba(54, 162, 235, 1)",
+              borderWidth: 1
+            }]
+          }
+        });
+      }
+
+      // Charger les stats par groupe
+      async function loadGroupStats() {
+        const res = await fetch("/.netlify/functions/getStatsByGroup");
+        const stats = await res.json();
+        const labels = Object.keys(stats);
+        const data = Object.values(stats);
+
+        new Chart(document.getElementById("groupStatsChart"), {
+          type: "pie",
+          data: {
+            labels: labels,
+            datasets: [{
+              data: data,
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.6)",
+                "rgba(54, 162, 235, 0.6)",
+                "rgba(255, 206, 86, 0.6)",
+                "rgba(75, 192, 192, 0.6)"
+              ]
+            }]
+          }
+        });
+      }
+
+      loadStats();
+      loadGroupStats();
+    } else {
+      document.body.innerHTML = "<h2>Accès refusé ❌</h2>";
+    }
+  </script>
+</body>
+</html>
