@@ -3,37 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Liste d'attente étudiants</title>
+  <title>Liste d'attente étudiants ??</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <header>
     <h1>Liste d'attente</h1>
-    <p>Ajouter votre nom complet, puis « Servi » quand votre question a été répondue. Les données sont enregistrées dans Google Sheets.</p>
+    <p>Ajouter votre <strong>nom complet</strong>. Seul l’enseignant peut maintenant marquer un étudiant comme « servi ».</p>
   </header>
+
+  <!-- MODE ENSEIGNANT -->
+  <section class="teacher-mode">
+    <button id="teacher-toggle">Activer le mode enseignant</button>
+
+    <div id="teacher-login" style="display:none; margin-top:10px;">
+      <input type="password" id="teacher-password" placeholder="Mot de passe enseignant">
+      <button id="teacher-login-btn">Valider</button>
+    </div>
+  </section>
 
   <section class="controls">
     <div class="row">
       <label>Sigle du cours</label>
-      <input id="course-code" type="text" placeholder="ex: 420-SN1-RE" />
-    </div>
-    <div class="row">
-      <label>Groupe</label>
-      <select id="group-number">
-        <select id="global-group"></select>
-<script>
-  const sel = document.getElementById("global-group");
-  for (let i = 1; i <= 16; i++) {
-    const opt = document.createElement("option");
-    opt.value = i;
-    opt.textContent = `Groupe ${i}`;
-    sel.appendChild(opt);
-  }
-</script>
-
+      <select id="course-code">
+        <option value="">Sélectionnez un cours…</option>
+        <option value="programmation_sciences">Programmation en sciences</option>
+        <option value="algo_java">Algorithmique et programmation Java</option>
+        <option value="linux">Système d’exploitation Linux</option>
+        <option value="reseaux">Environnements virtuels et réseaux</option>
       </select>
     </div>
+
+    <div class="row">
+      <label for="group">Groupe</label>
+      <input id="group" type="text" maxlength="2" placeholder="ex: 01" />
+    </div>
+
+
   </section>
 
   <section class="add">
@@ -46,9 +53,12 @@
   <section>
     <h2>File d’attente</h2>
     <ul id="queue"></ul>
+
     <div class="row actions">
       <button id="refresh-btn" class="secondary">Rafraîchir</button>
-      <button id="clear-local-btn" class="secondary" title="Ne supprime rien côté Sheets, seulement le cache local">Vider cache local</button>
+      <button id="clear-local-btn" class="secondary" title="Ne supprime rien côté Sheets, seulement le cache local">
+        Vider cache local
+      </button>
     </div>
   </section>
 
