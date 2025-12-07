@@ -1,4 +1,4 @@
-console.log("APP.JS CHARGÉ CORRECTEMENT !");
+console.log("APP.JS CHARGÉ CORRECTEMENT 6 nov !");
 
 
 //------------------------------------------------------
